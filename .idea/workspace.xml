@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b87e67f3-ef6e-436c-bceb-a95b5b6e3c4d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/GptEngine.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/interceptor/OkHttpHeaderInterceptor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/model/Request.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/model/Response.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/service/OpenAiService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/util/Error.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/Application.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/config/Config.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/config/ConfigImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/handler/ConversationHandler.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/handler/WhatsAppMessageHandler.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/model/ConversationMessage.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/model/SerializationAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/model/request/whatsapp/WhatsApp.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/model/response/config/ConfigResponse.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/model/response/health/HealthResponse.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/module/ContentNegotiationModule.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/module/RequestValidation.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/module/RoutingModule.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/route/WhatsAppWebhook.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/storage/InMemoryStorage.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/storage/Storage.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/util/EvictingQueue.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/resources/application.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/MessageRelayClient.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/error/RelayClientError.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/error/RelayError.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/impl/WhatsAppMessageRelayClient.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/model/SerializationAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/model/whatsapp/request/SendMessageRequest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/model/whatsapp/request/UpdateMessageStatusRequest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/model/whatsapp/response/SendMessageResponse.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/model/whatsapp/response/UpdateMessageStatusResponse.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/model/whatsapp/response/WhatsAppError.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/service/WhatsAppApiService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Object" />
+        <option value="Kotlin File" />
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2KfTItTBvDrZs8MmTbmqhmpPXnM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/model/request/whatsapp" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="dev.romio.gptwebhookservice.model.response.config" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ApplicationKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="dev.romio.gptwebhookservice.ApplicationKt" />
+      <module name="whatsapp-gpt.gpt-webhook-service.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.ApplicationKt" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b87e67f3-ef6e-436c-bceb-a95b5b6e3c4d" name="Changes" comment="" />
+      <created>1674364560998</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1674364560998</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
