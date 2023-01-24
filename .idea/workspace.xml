@@ -13,12 +13,14 @@
       <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-engine/build.gradle.kts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/GptEngine.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/interceptor/OkHttpHeaderInterceptor.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/model/Request.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/model/Response.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/service/OpenAiService.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gpt-engine/src/main/kotlin/dev/romio/gptengine/util/Error.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gpt-webhook-service/build.gradle.kts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/Application.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/config/Config.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gpt-webhook-service/src/main/kotlin/dev/romio/gptwebhookservice/config/ConfigImpl.kt" afterDir="false" />
@@ -42,6 +44,7 @@
       <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msg-relay-client/build.gradle.kts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/MessageRelayClient.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/error/RelayClientError.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/msg-relay-client/src/main/kotlin/dev/romio/msgrelayclient/error/RelayError.kt" afterDir="false" />
