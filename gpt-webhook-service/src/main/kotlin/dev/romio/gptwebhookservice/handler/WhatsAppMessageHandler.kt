@@ -1,6 +1,8 @@
 package dev.romio.gptwebhookservice.handler
 
+import arrow.core.Either
 import arrow.core.getOrHandle
+import arrow.core.left
 import dev.romio.gptwebhookservice.config.Config
 import dev.romio.gptwebhookservice.model.BotMessage
 import dev.romio.gptwebhookservice.model.UserMessage
@@ -8,13 +10,16 @@ import dev.romio.gptwebhookservice.model.UserMessageSource
 import dev.romio.gptwebhookservice.model.request.whatsapp.Text
 import dev.romio.gptwebhookservice.model.request.whatsapp.WhatsAppMessageRequest
 import dev.romio.msgrelayclient.impl.WhatsAppMessageRelayClient
+import io.ktor.server.application.*
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.slf4j.Logger
 
 class WhatsAppMessageHandler constructor(
     private val conversationHandler: ConversationHandler,
     private val messageRelayClient: WhatsAppMessageRelayClient,
-    private val config: Config
+    private val config: Config,
+    private val log: Logger
 ) {
     suspend fun handleMessage(whatsAppMessageRequest: WhatsAppMessageRequest)  {
         val whatsAppMessage = whatsAppMessageRequest.entry.lastOrNull()?.changes?.lastOrNull()?.value?.messages?.lastOrNull()
@@ -34,12 +39,22 @@ class WhatsAppMessageHandler constructor(
                     )
                 ).collect {
                     if(it.isRight()) {
-                        messageRelayClient.sendTextMessage(
+                        val message = it.getOrHandle { BotMessage("Unknown") }.msg
+                        val relayResult = messageRelayClient.sendTextMessage(
                             config.whatsAppPhoneNumberId,
                             whatsAppMessage.from,
                             false,
-                            it.getOrHandle { BotMessage("Unknown") }.msg
+                            message
                         )
+                        if(relayResult is Either.Left) {
+                            log.error("Error occurred while relaying whatsapp message: " +
+                                    "$message to: ${whatsAppMessage.from}, " +
+                                    "phoneNumId: ${config.whatsAppPhoneNumberId}, " +
+                                    "Error: ${relayResult.value.msg}" )
+                        }
+                    } else {
+                        log.error("Error occurred while getting response from ChatGpt, Error: " +
+                                (it as Either.Left<dev.romio.gptengine.util.Error>).value.msg)
                     }
                 }
             }

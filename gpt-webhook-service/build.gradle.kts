@@ -38,6 +38,9 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-gson:$ktorVersion")
     implementation("io.ktor:ktor-server-request-validation:$ktorVersion")
+    implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+
+    implementation("ch.qos.logback:logback-classic:1.4.5")
 
     implementation(project(":gpt-engine"))
     implementation(project(":msg-relay-client"))

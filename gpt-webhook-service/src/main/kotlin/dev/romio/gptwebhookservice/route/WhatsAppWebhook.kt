@@ -13,7 +13,12 @@ import io.ktor.server.routing.*
 
 fun Route.whatsApp(config: Config, conversationHandler: ConversationHandler) {
     val whatsAppMessageRelayClient = WhatsAppMessageRelayClient(config.whatsAppApiKey)
-    val whatsAppMessageHandler = WhatsAppMessageHandler(conversationHandler, whatsAppMessageRelayClient, config)
+    val whatsAppMessageHandler = WhatsAppMessageHandler(
+        conversationHandler,
+        whatsAppMessageRelayClient,
+        config,
+        this.application.log
+    )
     get("/whatsapp/receive") {
         val receivedVerifyToken = call.request.queryParameters["hub.verify_token"]
         val mode = call.request.queryParameters["hub.mode"]

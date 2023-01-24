@@ -13,7 +13,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 
-class ConversationHandler(private val config: Config, private val storage: Storage) {
+class ConversationHandler(
+    private val config: Config,
+    private val storage: Storage
+) {
 
     init {
         runBlocking {
