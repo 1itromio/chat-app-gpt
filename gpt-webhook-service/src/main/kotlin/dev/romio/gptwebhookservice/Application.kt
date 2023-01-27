@@ -33,7 +33,7 @@ fun Application.module() {
     }
     callLoggingModule()
     contentNegotiationModule(config)
-    routingModule(config, conversationHandler, onTelegramMessageReceived = {
+    routingModule(config, conversationHandler, storage, onTelegramMessageReceived = {
         tgBot.processUpdate(it)
     })
     requestValidationModule(config)

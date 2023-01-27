@@ -6,26 +6,30 @@ import dev.romio.gptwebhookservice.model.response.config.ConfigResponse
 import dev.romio.gptwebhookservice.model.response.health.HealthResponse
 import dev.romio.gptwebhookservice.route.telegram
 import dev.romio.gptwebhookservice.route.whatsApp
+import dev.romio.gptwebhookservice.storage.Storage
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.application.install
+import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 
 fun Application.routingModule(
     config: Config,
     conversationHandler: ConversationHandler,
+    storage: Storage,
     onTelegramMessageReceived: (String) -> Unit
 ) {
     install(Routing) {
         webhooks(config, conversationHandler, onTelegramMessageReceived)
         health()
-        config(config)
+        config(config, storage)
     }
 }
 
@@ -52,7 +56,7 @@ fun Route.health() {
     }
 }
 
-fun Route.config(config: Config) {
+fun Route.config(config: Config, storage: Storage) {
     route("/config") {
         get {
             val password = call.request.queryParameters["password"]
@@ -76,5 +80,11 @@ fun Route.config(config: Config) {
                 call.respondText("Please provide password in query parameter", status = HttpStatusCode.BadRequest)
             }
         }
+        post("/add-users") {
+            val userIds = call.receive<List<String>>()
+            storage.addUsers(userIds)
+            call.respondText("User Ids are added successfully")
+        }
     }
+
 }

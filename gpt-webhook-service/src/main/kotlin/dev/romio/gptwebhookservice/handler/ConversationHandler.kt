@@ -23,7 +23,9 @@ class ConversationHandler(
             val message = if (it.choices.isEmpty()) {
                 "Unknown"
             } else {
-                it.choices[0].text.replaceFirst("AI: ", "").substringBeforeLast(".") + "."
+                it.choices[0].text
+                    .replaceFirst("AI:", "")
+                    .substringBeforeLast(".").trim() + "."
             }
             BotMessage(message)
         }

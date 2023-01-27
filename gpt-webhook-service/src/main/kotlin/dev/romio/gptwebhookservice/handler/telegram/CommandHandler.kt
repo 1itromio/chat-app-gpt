@@ -34,8 +34,8 @@ class CommandHandler private constructor(
 
     private fun handleCommand(telegramMessage: TelegramReceivedTextMessage): Flow<TelegramResponseMessage> = flow {
         val responseText = when (telegramMessage.text) {
-            "start" -> "Hi there!!!"
-            "clear" -> {
+            "/start" -> "Hi there!!!"
+            "/clear" -> {
                 conversationHandler.clearConversation(UserMessageSource.TELEGRAM, telegramMessage.chatId.toString())
                 "All your previous chats are cleared"
             }

@@ -82,7 +82,7 @@ class MessageReplyHandler private constructor(
         flowCollector: FlowCollector<TelegramResponseMessage>,
         tgBot: Bot
     ) {
-        log?.info("Received Response: $receivedMessage")
+        log?.info("Received Response: ${receivedMessage.text}")
         if (responseText.contains("command-text:")) {
             val responseTextSplit = responseText.split("command-text:")
             val finalResponseText = responseTextSplit[0].replaceLast(",", "").trim()

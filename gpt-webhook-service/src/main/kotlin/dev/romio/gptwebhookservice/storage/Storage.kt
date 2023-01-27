@@ -7,4 +7,5 @@ interface Storage {
     suspend fun saveConversation(conversationKey: String, conversation: Conversation)
     suspend fun isValidUser(userId: String): Boolean
     suspend fun clearConversation(conversationKey: String)
+    suspend fun addUsers(userIds: List<String>)
 }

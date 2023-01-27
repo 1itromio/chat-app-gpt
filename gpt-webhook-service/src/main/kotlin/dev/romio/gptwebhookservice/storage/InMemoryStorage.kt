@@ -31,4 +31,8 @@ class InMemoryStorage(private val config: Config) : Storage {
     override suspend fun clearConversation(conversationKey: String): Unit = lock.withLock {
         conversationStorage[conversationKey]?.clear()
     }
+
+    override suspend fun addUsers(userIds: List<String>) {
+        this.userIds.addAll(userIds)
+    }
 }

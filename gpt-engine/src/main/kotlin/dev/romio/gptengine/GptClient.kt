@@ -16,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.IOException
 import java.lang.reflect.Type
+import java.util.concurrent.TimeUnit
 
 class GptClient constructor(apiKey: String) {
 
@@ -51,6 +52,7 @@ class GptClient constructor(apiKey: String) {
                 chain.proceed(newRequest)
             })
             .addInterceptor(logger)
+            .readTimeout(30, TimeUnit.SECONDS)
             .build()
 
         val retrofit = Retrofit.Builder()
