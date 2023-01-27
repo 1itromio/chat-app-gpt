@@ -21,7 +21,7 @@ fun Application.module() {
     val config = ConfigImpl(this)
     val gptClient = GptClient(config.openAiKey)
     val storage = InMemoryStorage(config)
-    val conversationHandler = ConversationHandler(config, gptClient, storage)
+    val conversationHandler = ConversationHandler(config, gptClient, storage, log)
     val tgBot = createTelegramBot(config, conversationHandler, log, storage, gptClient)
     // tgBot.setMyCommands()
     if (config.tgBotMode == TgBotMode.WEBHOOK) {

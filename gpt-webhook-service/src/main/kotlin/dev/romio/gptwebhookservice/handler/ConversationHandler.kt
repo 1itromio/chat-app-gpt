@@ -12,14 +12,17 @@ import dev.romio.gptwebhookservice.model.Conversation
 import dev.romio.gptwebhookservice.model.UserMessage
 import dev.romio.gptwebhookservice.model.UserMessageSource
 import dev.romio.gptwebhookservice.storage.Storage
+import org.slf4j.Logger
 
-class ConversationHandler(
+class ConversationHandler constructor(
     private val config: Config,
     private val gptClient: GptClient,
-    private val storage: Storage
+    private val storage: Storage,
+    private val log: Logger
 ) {
     suspend fun getResponseMessage(userMessage: UserMessage): Either<OpenAiClientError, BotMessage> {
         val completionResult = gptClient.createCompletions(createCompletionRequest(userMessage)).map {
+            log.info("Received Response from GPT: ${it.choices[0].text}")
             val message = if (it.choices.isEmpty()) {
                 "Unknown"
             } else {
