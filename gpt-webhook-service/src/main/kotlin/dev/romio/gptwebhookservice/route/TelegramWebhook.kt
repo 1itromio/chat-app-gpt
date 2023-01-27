@@ -1,8 +1,9 @@
 package dev.romio.gptwebhookservice.route
 
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.routing.*
+import io.ktor.server.application.call
+import io.ktor.server.request.receiveText
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.post
 
 fun Route.telegram(onMessageReceived: (String) -> Unit) {
     post("/receive") {

@@ -1,6 +1,6 @@
 package dev.romio.gptwebhookservice.handler.telegram
 
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 
 abstract class TelegramMessageHandler {
 

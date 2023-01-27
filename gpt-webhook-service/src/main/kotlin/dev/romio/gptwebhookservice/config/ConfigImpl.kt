@@ -1,6 +1,6 @@
 package dev.romio.gptwebhookservice.config
 
-import io.ktor.server.application.*
+import io.ktor.server.application.Application
 
 class ConfigImpl(private val application: Application) : Config {
 

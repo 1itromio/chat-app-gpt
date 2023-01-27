@@ -1,6 +1,7 @@
 package dev.romio.gptwebhookservice.util
 
-import java.util.*
+import java.util.LinkedList
+import java.util.Queue
 
 class EvictingQueue<T>(private val maxSize: Int) : Collection<T> {
     private val backingQueue: Queue<T> = LinkedList()

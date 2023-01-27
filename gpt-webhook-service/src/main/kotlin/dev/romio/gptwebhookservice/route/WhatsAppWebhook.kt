@@ -5,11 +5,16 @@ import dev.romio.gptwebhookservice.handler.ConversationHandler
 import dev.romio.gptwebhookservice.handler.WhatsAppMessageHandler
 import dev.romio.gptwebhookservice.model.request.whatsapp.WhatsAppMessageRequest
 import dev.romio.msgrelayclient.impl.WhatsAppMessageRelayClient
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.call
+import io.ktor.server.application.log
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.application
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 
 fun Route.whatsApp(config: Config, conversationHandler: ConversationHandler) {
     val whatsAppMessageRelayClient = WhatsAppMessageRelayClient(config.whatsAppApiKey)

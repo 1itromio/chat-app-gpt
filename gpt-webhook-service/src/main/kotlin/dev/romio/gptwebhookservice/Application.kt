@@ -10,8 +10,9 @@ import dev.romio.gptwebhookservice.module.contentNegotiationModule
 import dev.romio.gptwebhookservice.module.requestValidationModule
 import dev.romio.gptwebhookservice.module.routingModule
 import dev.romio.gptwebhookservice.storage.InMemoryStorage
-import io.ktor.server.application.*
-import io.ktor.server.netty.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.log
+import io.ktor.server.netty.EngineMain
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 

@@ -1,6 +1,5 @@
 package dev.romio.gptwebhookservice.handler.telegram
 
-import dev.romio.gptengine.GptClient
 import dev.romio.gptwebhookservice.handler.ConversationHandler
 import dev.romio.gptwebhookservice.model.UserMessageSource
 import kotlinx.coroutines.flow.Flow
