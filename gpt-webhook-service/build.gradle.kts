@@ -30,6 +30,7 @@ ktor {
 
 repositories {
     mavenCentral()
+    maven(url  = "https://jitpack.io")
 }
 
 dependencies {
@@ -46,6 +47,7 @@ dependencies {
     implementation(project(":msg-relay-client"))
 
     implementation("io.arrow-kt:arrow-core:1.1.2")
+    implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.7")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")

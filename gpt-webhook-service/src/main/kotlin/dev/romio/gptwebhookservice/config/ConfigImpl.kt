@@ -26,5 +26,11 @@ class ConfigImpl(private val application: Application): Config {
         get() = appConfig.property("config.openAi.startingPrompt").getString()
     override val configPassword: String
         get() = appConfig.property("config.configPassword").getString()
+    override val tgBotToken: String
+        get() = appConfig.property("config.telegram.botToken").getString()
+    override val tgBotMode: TgBotMode
+        get() = TgBotMode.valueOf(appConfig.property("config.telegram.mode").getString())
+    override val domain: String
+        get() = appConfig.property("config.domain").getString()
 
 }

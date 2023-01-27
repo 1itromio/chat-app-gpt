@@ -2,50 +2,52 @@ package dev.romio.gptengine
 
 import arrow.core.Either
 import com.google.gson.GsonBuilder
-import dev.romio.gptengine.interceptor.OkHttpHeaderInterceptor
 import dev.romio.gptengine.model.CreateCompletionsRequest
 import dev.romio.gptengine.model.CreateEditRequest
 import dev.romio.gptengine.model.OpenAiError
 import dev.romio.gptengine.service.OpenAiService
 import dev.romio.gptengine.util.Error
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
-object GptEngine {
+class GptClient constructor(apiKey: String) {
 
-    private const val BASE_URL = "https://api.openai.com"
-
-    private val mutexLock = Mutex()
-
-    private lateinit var apiKey: String
-    private lateinit var openAiService: OpenAiService
-
-    var isInitialised: Boolean = false
-        private set
+    companion object {
+        private const val HEADER_AUTH = "Authorization"
+        private const val BASE_URL = "https://api.openai.com"
+    }
 
     private val gson by lazy {
         GsonBuilder().create()
     }
 
-    suspend fun init(apiKey: String) = mutexLock.withLock {
-        if(isInitialised) {
-            return@withLock
-        }
-        this.apiKey = apiKey
+    private val openAiService by lazy {
+        val logger = HttpLoggingInterceptor()
+        logger.level = HttpLoggingInterceptor.Level.BASIC
+
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(OkHttpHeaderInterceptor(this.apiKey))
+            .addInterceptor(Interceptor { chain ->
+                val newRequest = chain.request()
+                    .newBuilder()
+                    .addHeader(HEADER_AUTH, "Bearer $apiKey")
+                    .build()
+                chain.proceed(newRequest)
+            })
+            .addInterceptor(logger)
             .build()
-        val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
-        openAiService = retrofit.create(OpenAiService::class.java)
-        isInitialised = true
+
+        retrofit.create(OpenAiService::class.java)
     }
 
     suspend fun listModels() = delegateResponseHandling {

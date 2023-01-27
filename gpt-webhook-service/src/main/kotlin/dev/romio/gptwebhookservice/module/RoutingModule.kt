@@ -1,28 +1,37 @@
 package dev.romio.gptwebhookservice.module
 
+import com.github.kotlintelegrambot.Bot
 import dev.romio.gptwebhookservice.config.Config
 import dev.romio.gptwebhookservice.handler.ConversationHandler
 import dev.romio.gptwebhookservice.model.response.config.ConfigResponse
 import dev.romio.gptwebhookservice.model.response.health.HealthResponse
+import dev.romio.gptwebhookservice.route.telegram
 import dev.romio.gptwebhookservice.route.whatsApp
-import dev.romio.gptwebhookservice.storage.InMemoryStorage
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.routingModule(config: Config) {
+fun Application.routingModule(config: Config,
+                              conversationHandler: ConversationHandler,
+                              onTelegramMessageReceived: (String) -> Unit) {
     install(Routing) {
-        webhooks(config)
+        webhooks(config, conversationHandler, onTelegramMessageReceived)
         health()
         config(config)
     }
 }
 
-fun Route.webhooks(config: Config) {
-    val conversationHandler = ConversationHandler(config, InMemoryStorage(config))
+fun Route.webhooks(config: Config,
+                   conversationHandler: ConversationHandler,
+                   onTelegramMessageReceived: (String) -> Unit) {
     route("/webhook") {
-        whatsApp(config, conversationHandler)
+        route("/whatsApp") {
+            whatsApp(config, conversationHandler)
+        }
+        route("/telegram") {
+            telegram(onTelegramMessageReceived)
+        }
     }
 }
 
@@ -47,7 +56,10 @@ fun Route.config(config: Config) {
                     openAiApiKey = config.openAiKey,
                     startingPrompt = config.startingPrompt,
                     textModel = config.textModel,
-                    codeModel = config.codeModel
+                    codeModel = config.codeModel,
+                    tgBotToken = config.tgBotToken,
+                    tgBotMode = config.tgBotMode.name,
+                    domain = config.domain
                 ))
             } else {
                 call.respondText("Please provide password in query parameter", status = HttpStatusCode.BadRequest)

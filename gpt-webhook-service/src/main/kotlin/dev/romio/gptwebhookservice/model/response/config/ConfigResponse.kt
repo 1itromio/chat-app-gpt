@@ -18,5 +18,11 @@ data class ConfigResponse(
     @SerializedName("textModel")
     val textModel: String,
     @SerializedName("codeModel")
-    val codeModel: String
+    val codeModel: String,
+    @SerializedName("tgBotToken")
+    val tgBotToken: String,
+    @SerializedName("tgBotMode")
+    val tgBotMode: String,
+    @SerializedName("domain")
+    val domain: String
 )

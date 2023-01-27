@@ -9,17 +9,26 @@ import kotlinx.coroutines.sync.withLock
 class InMemoryStorage(private val config: Config): Storage {
 
     private val conversationStorage = hashMapOf<String, EvictingQueue<Conversation>>()
+    private val userIds = mutableSetOf("5690321310")
 
     private val lock = Mutex()
 
-    override suspend fun getConversation(userId: String): List<Conversation> = lock.withLock {
-        return conversationStorage[userId]?.toList() ?: emptyList()
+    override suspend fun getConversation(conversationKey: String): List<Conversation> = lock.withLock {
+        return conversationStorage[conversationKey]?.toList() ?: emptyList()
     }
 
-    override suspend fun saveConversation(userId: String, conversation: Conversation) = lock.withLock {
-        val evictingQueue = conversationStorage.getOrPut(userId) {
+    override suspend fun saveConversation(conversationKey: String, conversation: Conversation) = lock.withLock {
+        val evictingQueue = conversationStorage.getOrPut(conversationKey) {
             EvictingQueue(config.maxConversationSize)
         }
         evictingQueue.add(conversation)
+    }
+
+    override suspend fun isValidUser(userId: String): Boolean {
+        return userIds.contains(userId)
+    }
+
+    override suspend fun clearConversation(conversationKey: String): Unit = lock.withLock {
+        conversationStorage[conversationKey]?.clear()
     }
 }

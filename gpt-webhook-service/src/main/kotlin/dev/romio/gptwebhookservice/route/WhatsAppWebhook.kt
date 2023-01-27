@@ -19,7 +19,7 @@ fun Route.whatsApp(config: Config, conversationHandler: ConversationHandler) {
         config,
         this.application.log
     )
-    get("/whatsapp/receive") {
+    get("/receive") {
         val receivedVerifyToken = call.request.queryParameters["hub.verify_token"]
         val mode = call.request.queryParameters["hub.mode"]
         val challenge = call.request.queryParameters["hub.challenge"] ?: ""
@@ -30,7 +30,7 @@ fun Route.whatsApp(config: Config, conversationHandler: ConversationHandler) {
         }
     }
 
-    post("/whatsapp/receive") {
+    post("/receive") {
         val payload = call.receive<WhatsAppMessageRequest>()
         whatsAppMessageHandler.handleMessage(payload)
         call.respondText("Done")

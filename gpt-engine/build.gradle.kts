@@ -20,6 +20,8 @@ dependencies {
 
     implementation("io.arrow-kt:arrow-core:1.1.2")
 
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }

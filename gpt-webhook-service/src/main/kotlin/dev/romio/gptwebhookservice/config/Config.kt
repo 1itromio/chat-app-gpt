@@ -10,4 +10,7 @@ interface Config {
     val codeModel: String
     val startingPrompt: String
     val configPassword: String
+    val tgBotToken: String
+    val tgBotMode: TgBotMode
+    val domain: String
 }

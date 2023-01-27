@@ -2,32 +2,22 @@ package dev.romio.gptwebhookservice.handler
 
 import arrow.core.Either
 import arrow.core.getOrElse
-import dev.romio.gptengine.GptEngine
+import dev.romio.gptengine.GptClient
 import dev.romio.gptengine.model.CreateCompletionsRequest
 import dev.romio.gptwebhookservice.config.Config
 import dev.romio.gptwebhookservice.model.BotMessage
 import dev.romio.gptwebhookservice.model.Conversation
 import dev.romio.gptwebhookservice.model.UserMessage
+import dev.romio.gptwebhookservice.model.UserMessageSource
 import dev.romio.gptwebhookservice.storage.Storage
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
 
 class ConversationHandler(
     private val config: Config,
+    private val gptClient: GptClient,
     private val storage: Storage
 ) {
-
-    init {
-        runBlocking {
-            GptEngine.init(config.openAiKey)
-        }
-    }
-
-    fun getResponseMessage(
-        userMessage: UserMessage
-    ): Flow<Either<dev.romio.gptengine.util.Error, BotMessage>> = flow {
-        val completionResult = GptEngine.createCompletions(createCompletionRequest(userMessage)).map {
+    suspend fun getResponseMessage(userMessage: UserMessage): Either<dev.romio.gptengine.util.Error, BotMessage> {
+        val completionResult = gptClient.createCompletions(createCompletionRequest(userMessage)).map {
             val message = if(it.choices.isEmpty()) {
                 "Unknown"
             } else {
@@ -37,27 +27,36 @@ class ConversationHandler(
         }
         if(completionResult.isRight()) {
             storage.saveConversation(
-                getUserId(userMessage),
+                getConversationKey(userMessage.source, userMessage.userId),
                 Conversation(userMessage, completionResult.getOrElse { BotMessage("Unknown") })
             )
         }
-        emit(completionResult)
+        return completionResult
+    }
+
+    suspend fun clearConversation(source: UserMessageSource, userId: String) {
+        storage.clearConversation(getConversationKey(source, userId))
     }
 
     private suspend fun createCompletionRequest(userMessage: UserMessage): CreateCompletionsRequest {
         val prompt = config.startingPrompt +
                 "\n" +
-                storage.getConversation(getUserId(userMessage)).joinToString("\n") {
+                storage.getConversation(getConversationKey(
+                    userMessage.source,
+                    userMessage.userId
+                )).joinToString("\n") {
                     "Human: ${it.userMessage.msg}\nAI: ${it.botMessage.msg}"
-                }
+                } +
+                "\n" +
+                "Human: ${userMessage.msg}"
         return CreateCompletionsRequest(
             model = config.textModel,
             prompt = prompt
         )
     }
 
-    private fun getUserId(userMessage: UserMessage): String {
-        return "${userMessage.source.name}_${userMessage.userId}"
+    private fun getConversationKey(source: UserMessageSource, userId: String): String {
+        return "$source-$userId"
     }
 
 }

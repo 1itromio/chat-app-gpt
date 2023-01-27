@@ -30,4 +30,8 @@ class EvictingQueue<T>(private val maxSize: Int): Collection<T> {
         }
         backingQueue.add(value)
     }
+
+    fun clear() {
+        backingQueue.clear()
+    }
 }

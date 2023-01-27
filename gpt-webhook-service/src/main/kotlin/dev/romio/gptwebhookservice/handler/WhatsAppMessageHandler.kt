@@ -2,7 +2,6 @@ package dev.romio.gptwebhookservice.handler
 
 import arrow.core.Either
 import arrow.core.getOrHandle
-import arrow.core.left
 import dev.romio.gptwebhookservice.config.Config
 import dev.romio.gptwebhookservice.model.BotMessage
 import dev.romio.gptwebhookservice.model.UserMessage
@@ -10,7 +9,6 @@ import dev.romio.gptwebhookservice.model.UserMessageSource
 import dev.romio.gptwebhookservice.model.request.whatsapp.Text
 import dev.romio.gptwebhookservice.model.request.whatsapp.WhatsAppMessageRequest
 import dev.romio.msgrelayclient.impl.WhatsAppMessageRelayClient
-import io.ktor.server.application.*
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
@@ -37,7 +35,7 @@ class WhatsAppMessageHandler constructor(
                         source = UserMessageSource.WHATS_APP,
                         msg = content.body
                     )
-                ).collect {
+                ).let {
                     if(it.isRight()) {
                         val message = it.getOrHandle { BotMessage("Unknown") }.msg
                         val relayResult = messageRelayClient.sendTextMessage(
