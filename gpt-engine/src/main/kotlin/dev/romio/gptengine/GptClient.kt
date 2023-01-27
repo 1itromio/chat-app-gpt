@@ -52,7 +52,7 @@ class GptClient constructor(apiKey: String) {
                 chain.proceed(newRequest)
             })
             .addInterceptor(logger)
-            .readTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
             .build()
 
         val retrofit = Retrofit.Builder()
