@@ -1,6 +1,5 @@
 package dev.romio.gptwebhookservice.route
 
-import com.github.kotlintelegrambot.Bot
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*

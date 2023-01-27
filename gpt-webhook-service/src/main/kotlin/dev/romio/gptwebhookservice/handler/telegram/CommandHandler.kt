@@ -8,35 +8,33 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 
 class CommandHandler private constructor(
-    private val conversationHandler: ConversationHandler,
-    private val gptClient: GptClient
-): TelegramMessageHandler()  {
+    private val conversationHandler: ConversationHandler
+) : TelegramMessageHandler() {
 
     class Builder private constructor() {
-        constructor(init: Builder.() -> Unit): this() {
+        constructor(init: Builder.() -> Unit) : this() {
             init()
         }
 
         var conversationHandler: ConversationHandler? = null
-        var gptClient: GptClient? = null
 
         fun build(): CommandHandler {
-            if(conversationHandler == null || gptClient == null) {
+            if (conversationHandler == null) {
                 throw IllegalArgumentException("All required arguments are not provided for the CommandHandler Builder")
             }
-            return CommandHandler(conversationHandler!!, gptClient!!)
+            return CommandHandler(conversationHandler!!)
         }
     }
 
     override fun handle(telegramMessage: TelegramReceivedMessage): Flow<TelegramResponseMessage> {
-        if(telegramMessage is TelegramReceivedTextMessage && telegramMessage.text.startsWith("/")) {
+        if (telegramMessage is TelegramReceivedTextMessage && telegramMessage.text.startsWith("/")) {
             return handleCommand(telegramMessage)
         }
         return next?.handle(telegramMessage) ?: flowOf(getDefaultTextMessage(telegramMessage))
     }
 
     private fun handleCommand(telegramMessage: TelegramReceivedTextMessage): Flow<TelegramResponseMessage> = flow {
-        val responseText = when(telegramMessage.text) {
+        val responseText = when (telegramMessage.text) {
             "start" -> "Hi there!!!"
             "clear" -> {
                 conversationHandler.clearConversation(UserMessageSource.TELEGRAM, telegramMessage.chatId.toString())

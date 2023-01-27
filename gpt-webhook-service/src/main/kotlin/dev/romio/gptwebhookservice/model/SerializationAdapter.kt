@@ -6,14 +6,14 @@ import dev.romio.gptwebhookservice.model.request.whatsapp.Text
 import dev.romio.gptwebhookservice.model.request.whatsapp.UnknownMessage
 import java.lang.reflect.Type
 
-class WhatsAppMessageSerializationAdapter: JsonSerializer<Message>, JsonDeserializer<Message> {
+class WhatsAppMessageSerializationAdapter : JsonSerializer<Message>, JsonDeserializer<Message> {
 
     private val gson by lazy {
         GsonBuilder().create()
     }
 
     override fun serialize(src: Message?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
-        if(src == null) {
+        if (src == null) {
             throw IllegalArgumentException("Provided source for WhatsAppMessageSerialization is null")
         }
         val jsonObject = JsonObject()
@@ -26,13 +26,13 @@ class WhatsAppMessageSerializationAdapter: JsonSerializer<Message>, JsonDeserial
     }
 
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Message {
-        if(json == null) {
+        if (json == null) {
             throw JsonParseException("Invalid or null WhatsApp Message object passed for deserialization")
         }
         val jsonObject = json.asJsonObject
         val msgType = jsonObject.get("type").asString
         val whatsAppMessageObject = jsonObject.get(msgType)
-        val whatsAppMessage = when(msgType) {
+        val whatsAppMessage = when (msgType) {
             "text" -> gson.fromJson(whatsAppMessageObject, Text::class.java)
             else -> UnknownMessage
         }

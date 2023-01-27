@@ -66,6 +66,6 @@ abstract class WhatsAppMessage(val type: String)
 data class Text(
     @SerializedName("body")
     val body: String
-): WhatsAppMessage("text")
+) : WhatsAppMessage("text")
 
-object UnknownMessage: WhatsAppMessage("unknown")
+object UnknownMessage : WhatsAppMessage("unknown")

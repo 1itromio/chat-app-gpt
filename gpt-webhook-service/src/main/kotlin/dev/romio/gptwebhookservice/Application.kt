@@ -22,8 +22,8 @@ fun Application.module() {
     val storage = InMemoryStorage(config)
     val conversationHandler = ConversationHandler(config, gptClient, storage)
     val tgBot = createTelegramBot(config, conversationHandler, log, storage, gptClient)
-    //tgBot.setMyCommands()
-    if(config.tgBotMode == TgBotMode.WEBHOOK) {
+    // tgBot.setMyCommands()
+    if (config.tgBotMode == TgBotMode.WEBHOOK) {
         log.info("Starting tg bot in webhook mode")
         tgBot.startWebhook()
     } else {

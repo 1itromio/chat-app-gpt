@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.flowOf
 class UserFilterHandler private constructor(
     private val isValidUserId: suspend (Long?) -> Boolean,
     private val defaultMessage: TelegramResponseMessage,
-): TelegramMessageHandler() {
+) : TelegramMessageHandler() {
 
     class Builder private constructor() {
-        constructor(init: Builder.() -> Unit): this() {
+        constructor(init: Builder.() -> Unit) : this() {
             init()
         }
 
@@ -18,7 +18,7 @@ class UserFilterHandler private constructor(
         var defaultMessage: TelegramResponseMessage? = null
 
         fun build(): UserFilterHandler {
-            if(isValidUserId == null || defaultMessage == null) {
+            if (isValidUserId == null || defaultMessage == null) {
                 throw IllegalArgumentException("All Required are not set for the builder")
             }
             return UserFilterHandler(isValidUserId!!, defaultMessage!!)
@@ -26,7 +26,7 @@ class UserFilterHandler private constructor(
     }
 
     override fun handle(telegramMessage: TelegramReceivedMessage): Flow<TelegramResponseMessage> = flow {
-        if(isValidUserId(telegramMessage.userId) && next != null) {
+        if (isValidUserId(telegramMessage.userId) && next != null) {
             (next?.handle(telegramMessage) ?: flowOf(defaultMessage)).collect {
                 emit(it)
             }

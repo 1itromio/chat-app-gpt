@@ -6,7 +6,7 @@ import dev.romio.gptwebhookservice.util.EvictingQueue
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class InMemoryStorage(private val config: Config): Storage {
+class InMemoryStorage(private val config: Config) : Storage {
 
     private val conversationStorage = hashMapOf<String, EvictingQueue<Conversation>>()
     private val userIds = mutableSetOf("5690321310")

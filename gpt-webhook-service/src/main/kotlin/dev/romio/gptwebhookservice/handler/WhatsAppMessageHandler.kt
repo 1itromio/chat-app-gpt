@@ -19,10 +19,10 @@ class WhatsAppMessageHandler constructor(
     private val config: Config,
     private val log: Logger
 ) {
-    suspend fun handleMessage(whatsAppMessageRequest: WhatsAppMessageRequest)  {
+    suspend fun handleMessage(whatsAppMessageRequest: WhatsAppMessageRequest) {
         val whatsAppMessage = whatsAppMessageRequest.entry.lastOrNull()?.changes?.lastOrNull()?.value?.messages?.lastOrNull()
         val content = whatsAppMessage?.content
-        if(content !is Text) {
+        if (content !is Text) {
             return
         }
         coroutineScope {
@@ -36,7 +36,7 @@ class WhatsAppMessageHandler constructor(
                         msg = content.body
                     )
                 ).let {
-                    if(it.isRight()) {
+                    if (it.isRight()) {
                         val message = it.getOrHandle { BotMessage("Unknown") }.msg
                         val relayResult = messageRelayClient.sendTextMessage(
                             config.whatsAppPhoneNumberId,
@@ -44,15 +44,19 @@ class WhatsAppMessageHandler constructor(
                             false,
                             message
                         )
-                        if(relayResult is Either.Left) {
-                            log.error("Error occurred while relaying whatsapp message: " +
+                        if (relayResult is Either.Left) {
+                            log.error(
+                                "Error occurred while relaying whatsapp message: " +
                                     "$message to: ${whatsAppMessage.from}, " +
                                     "phoneNumId: ${config.whatsAppPhoneNumberId}, " +
-                                    "Error: ${relayResult.value.msg}" )
+                                    "Error: ${relayResult.value.msg}"
+                            )
                         }
                     } else {
-                        log.error("Error occurred while getting response from ChatGpt, Error: " +
-                                (it as Either.Left<dev.romio.gptengine.util.Error>).value.msg)
+                        log.error(
+                            "Error occurred while getting response from ChatGpt, Error: " +
+                                (it as Either.Left<dev.romio.gptengine.util.OpenAiClientError>).value.msg
+                        )
                     }
                 }
             }

@@ -65,7 +65,6 @@ data class OpenAiModelPermission(
     val organization: String?
 )
 
-
 data class OpenAiCompletionsResponse(
     @SerializedName("choices")
     val choices: List<Choice>,
@@ -107,8 +106,82 @@ data class Choice(
     @SerializedName("index")
     val index: Int,
     @SerializedName("logprobs")
-    val logprobs: Any?,
+    val logProbs: LogProbs?,
     @SerializedName("text")
     val text: String
 )
 
+data class LogProbs(
+    @SerializedName("text_offset")
+    val textOffset: List<Int>,
+    @SerializedName("token_logprobs")
+    val tokenLogprobs: List<Double>,
+    @SerializedName("tokens")
+    val tokens: List<String>,
+    @SerializedName("top_logprobs")
+    val topLogprobs: Any?
+)
+
+data class OpenAiImageResponse(
+    @SerializedName("created")
+    val created: Long,
+    @SerializedName("data")
+    val imageDataList: List<ImageData>
+)
+
+data class ImageData(
+    @SerializedName("url")
+    val url: String
+)
+
+data class OpenAiCreateModerationResponse(
+    @SerializedName("id")
+    val id: String,
+    @SerializedName("model")
+    val model: String,
+    @SerializedName("results")
+    val moderationResults: List<ModerationResult>
+)
+
+data class ModerationResult(
+    @SerializedName("categories")
+    val categories: Categories,
+    @SerializedName("category_scores")
+    val categoryScores: CategoryScores,
+    @SerializedName("flagged")
+    val flagged: Boolean
+)
+
+data class Categories(
+    @SerializedName("hate")
+    val hate: Boolean,
+    @SerializedName("hate/threatening")
+    val hateOrThreatening: Boolean,
+    @SerializedName("self-harm")
+    val selfHarm: Boolean,
+    @SerializedName("sexual")
+    val sexual: Boolean,
+    @SerializedName("sexual/minors")
+    val sexualOrMinors: Boolean,
+    @SerializedName("violence")
+    val violence: Boolean,
+    @SerializedName("violence/graphic")
+    val violenceOrGraphic: Boolean
+)
+
+data class CategoryScores(
+    @SerializedName("hate")
+    val hate: Double,
+    @SerializedName("hate/threatening")
+    val hateOrThreatening: Double,
+    @SerializedName("self-harm")
+    val selfHarm: Double,
+    @SerializedName("sexual")
+    val sexual: Double,
+    @SerializedName("sexual/minors")
+    val sexualOrMinors: Double,
+    @SerializedName("violence")
+    val violence: Double,
+    @SerializedName("violence/graphic")
+    val violenceOrGraphic: Double
+)

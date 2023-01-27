@@ -4,6 +4,7 @@ plugins {
     application
     kotlin("jvm")
     id("io.ktor.plugin") version "2.2.2"
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 group = "dev.romio"
@@ -18,19 +19,21 @@ ktor {
         jreVersion.set(io.ktor.plugin.features.JreVersion.JRE_17)
         localImageName.set("whatsapp-gpt")
         imageTag.set("0.0.1-preview")
-        portMappings.set(listOf(
-            io.ktor.plugin.features.DockerPortMapping(
-                80,
-                8080,
-                io.ktor.plugin.features.DockerPortMappingProtocol.TCP
+        portMappings.set(
+            listOf(
+                io.ktor.plugin.features.DockerPortMapping(
+                    80,
+                    8080,
+                    io.ktor.plugin.features.DockerPortMappingProtocol.TCP
+                )
             )
-        ))
+        )
     }
 }
 
 repositories {
     mavenCentral()
-    maven(url  = "https://jitpack.io")
+    maven(url = "https://jitpack.io")
 }
 
 dependencies {

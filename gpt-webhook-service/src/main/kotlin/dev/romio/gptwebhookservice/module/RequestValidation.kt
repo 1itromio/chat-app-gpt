@@ -6,6 +6,5 @@ import io.ktor.server.plugins.requestvalidation.*
 
 fun Application.requestValidationModule(config: Config) {
     install(RequestValidation) {
-
     }
 }

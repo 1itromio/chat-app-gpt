@@ -28,7 +28,7 @@ fun createTelegramBot(
 ): Bot {
     return bot {
         token = config.tgBotToken
-        if(config.tgBotMode == TgBotMode.WEBHOOK) {
+        if (config.tgBotMode == TgBotMode.WEBHOOK) {
             webhook {
                 url = "${config.domain}/webhook/telegram/receive"
             }
@@ -43,7 +43,6 @@ fun createTelegramBot(
                     addHandler {
                         commandHandler {
                             conversationHandler = botConversationHandler
-                            gptClient = chatGptClient
                         }
                     }
                     addHandler {
@@ -62,8 +61,9 @@ fun createTelegramBot(
                         }
                     }
                 }?.perform(CoroutineScope(Dispatchers.Default)) {
-                    when(it) {
+                    when (it) {
                         is TelegramResponseTextMessage -> bot.sendMessage(ChatId.fromId(it.chatId), it.text)
+                        is TelegramResponsePhotoMessage -> bot.sendPhoto(ChatId.fromId(it.chatId), it.tgFile)
                     }
                 }
             }
@@ -76,11 +76,12 @@ fun TextHandlerEnvironment.handleMessage(
 ): Flow<TelegramResponseMessage>? {
     val builder = TelegramMessageHandler.Builder()
     builder.init()
-    return builder.tgMessageHandler?.handle(TelegramReceivedTextMessage(
-        userId = this.message.from?.id,
-        msgId = this.message.messageId,
-        chatId = this.message.chat.id,
-        text = this.text
-    ))
+    return builder.tgMessageHandler?.handle(
+        TelegramReceivedTextMessage(
+            userId = this.message.from?.id,
+            msgId = this.message.messageId,
+            chatId = this.message.chat.id,
+            text = this.text
+        )
+    )
 }
-

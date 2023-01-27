@@ -9,7 +9,7 @@ abstract class TelegramMessageHandler {
             private set
 
         fun addHandler(handlerBuilder: () -> TelegramMessageHandler) {
-            if(this.tgMessageHandler == null) {
+            if (this.tgMessageHandler == null) {
                 this.tgMessageHandler = handlerBuilder()
             } else {
                 this.tgMessageHandler?.next = handlerBuilder()

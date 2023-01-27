@@ -2,7 +2,7 @@ package dev.romio.gptwebhookservice.util
 
 import java.util.*
 
-class EvictingQueue<T>(private val maxSize: Int): Collection<T> {
+class EvictingQueue<T>(private val maxSize: Int) : Collection<T> {
     private val backingQueue: Queue<T> = LinkedList()
 
     override val size: Int
@@ -25,7 +25,7 @@ class EvictingQueue<T>(private val maxSize: Int): Collection<T> {
     }
 
     fun add(value: T) {
-        if(backingQueue.size >= maxSize) {
+        if (backingQueue.size >= maxSize) {
             backingQueue.poll()
         }
         backingQueue.add(value)

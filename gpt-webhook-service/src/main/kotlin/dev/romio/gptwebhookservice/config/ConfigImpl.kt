@@ -2,7 +2,7 @@ package dev.romio.gptwebhookservice.config
 
 import io.ktor.server.application.*
 
-class ConfigImpl(private val application: Application): Config {
+class ConfigImpl(private val application: Application) : Config {
 
     private val appConfig by lazy {
         application.environment.config
@@ -32,5 +32,4 @@ class ConfigImpl(private val application: Application): Config {
         get() = TgBotMode.valueOf(appConfig.property("config.telegram.mode").getString())
     override val domain: String
         get() = appConfig.property("config.domain").getString()
-
 }

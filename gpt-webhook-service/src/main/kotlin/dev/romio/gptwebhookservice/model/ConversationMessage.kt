@@ -10,11 +10,11 @@ class UserMessage(
     val userId: String,
     val source: UserMessageSource,
     msg: String
-): ConversationMessage(msg, UserType.USER)
+) : ConversationMessage(msg, UserType.USER)
 
 class BotMessage(
     msg: String
-): ConversationMessage(msg, UserType.BOT)
+) : ConversationMessage(msg, UserType.BOT)
 
 enum class UserType {
     BOT, USER

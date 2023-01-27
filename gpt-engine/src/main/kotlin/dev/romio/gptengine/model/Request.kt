@@ -37,7 +37,6 @@ data class CreateCompletionsRequest(
     val user: String? = null
 )
 
-
 data class CreateEditRequest(
     @SerializedName("input")
     val input: String,
@@ -51,4 +50,26 @@ data class CreateEditRequest(
     val topP: Float = 1.0f,
     @SerializedName("n")
     val n: Int = 1,
+)
+
+enum class OpenAiImageSize(val value: String) {
+    SMALL("256x256"), MEDIUM("512x512"), LARGE("1024x1024")
+}
+
+data class CreateImageRequest(
+    @SerializedName("prompt")
+    val prompt: String,
+    @SerializedName("n")
+    val n: Int = 1,
+    @SerializedName("size")
+    val size: OpenAiImageSize? = null,
+    @SerializedName("response_format")
+    val responseFormat: String = "url",
+    @SerializedName("user")
+    val user: String? = null
+)
+
+data class CreateModerationRequest(
+    @SerializedName("input")
+    val input: String
 )

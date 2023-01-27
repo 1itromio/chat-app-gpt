@@ -23,7 +23,7 @@ fun Route.whatsApp(config: Config, conversationHandler: ConversationHandler) {
         val receivedVerifyToken = call.request.queryParameters["hub.verify_token"]
         val mode = call.request.queryParameters["hub.mode"]
         val challenge = call.request.queryParameters["hub.challenge"] ?: ""
-        if(config.whatsAppVerifyToken == receivedVerifyToken && mode == "subscribe") {
+        if (config.whatsAppVerifyToken == receivedVerifyToken && mode == "subscribe") {
             call.respondText(challenge)
         } else {
             call.respond(HttpStatusCode.BadRequest)
