@@ -32,4 +32,6 @@ class ConfigImpl(private val application: Application) : Config {
         get() = TgBotMode.valueOf(appConfig.property("config.telegram.mode").getString())
     override val domain: String
         get() = appConfig.property("config.domain").getString()
+    override val defaultUserId: String
+        get() = appConfig.property("config.telegram.defaultUserId").getString()
 }

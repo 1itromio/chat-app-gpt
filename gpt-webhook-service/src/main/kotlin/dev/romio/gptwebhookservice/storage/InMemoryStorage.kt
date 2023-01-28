@@ -9,7 +9,7 @@ import kotlinx.coroutines.sync.withLock
 class InMemoryStorage(private val config: Config) : Storage {
 
     private val conversationStorage = hashMapOf<String, EvictingQueue<Conversation>>()
-    private val userIds = mutableSetOf("5690321310")
+    private val userIds = mutableSetOf(config.defaultUserId)
 
     private val lock = Mutex()
 

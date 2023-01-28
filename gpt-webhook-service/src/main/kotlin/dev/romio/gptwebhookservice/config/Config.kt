@@ -13,4 +13,5 @@ interface Config {
     val tgBotToken: String
     val tgBotMode: TgBotMode
     val domain: String
+    val defaultUserId: String
 }

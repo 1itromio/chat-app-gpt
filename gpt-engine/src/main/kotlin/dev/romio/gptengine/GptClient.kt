@@ -1,28 +1,69 @@
 package dev.romio.gptengine
 
 import arrow.core.Either
-import com.google.gson.*
-import dev.romio.gptengine.model.*
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
+import dev.romio.gptengine.model.CreateCompletionsRequest
+import dev.romio.gptengine.model.CreateEditRequest
+import dev.romio.gptengine.model.CreateImageRequest
+import dev.romio.gptengine.model.OpenAiCompletionsResponse
+import dev.romio.gptengine.model.OpenAiError
+import dev.romio.gptengine.model.OpenAiImageResponse
+import dev.romio.gptengine.model.OpenAiImageSize
 import dev.romio.gptengine.service.OpenAiService
 import dev.romio.gptengine.util.OpenAiClientError
-import okhttp3.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.IOException
 import java.lang.reflect.Type
-import java.util.concurrent.TimeUnit
+import java.time.Duration
+import java.util.LinkedList
 
-class GptClient constructor(apiKey: String) {
+class GptClient private constructor(
+    private val baseUrl: String,
+    private val apiKey: String,
+    private val timeOut: Duration?,
+    private val interceptors: LinkedList<Interceptor>
+) {
+
+    private constructor(builder: Builder): this(
+        builder.baseUrl,
+        builder.apiKey,
+        builder.timeOut,
+        builder.interceptors
+    )
 
     companion object {
-        private const val HEADER_AUTH = "Authorization"
-        private const val BASE_URL = "https://api.openai.com"
+        inline fun gptClient(init: Builder.() -> Unit) = Builder().apply(init).build()
+    }
+
+    class Builder {
+
+        var baseUrl: String = "https://api.openai.com"
+        var apiKey: String = ""
+        var timeOut: Duration? = null
+        val interceptors: LinkedList<Interceptor> = LinkedList<Interceptor>()
+
+        fun addInterceptor(interceptor: () -> Interceptor) {
+            interceptors.add(interceptor())
+        }
+
+        fun build() = GptClient(this)
     }
 
     private val gson by lazy {
@@ -40,23 +81,28 @@ class GptClient constructor(apiKey: String) {
     }
 
     private val openAiService by lazy {
-        val logger = HttpLoggingInterceptor()
-        logger.level = HttpLoggingInterceptor.Level.BASIC
-
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(Interceptor { chain ->
                 val newRequest = chain.request()
                     .newBuilder()
-                    .addHeader(HEADER_AUTH, "Bearer $apiKey")
+                    .addHeader("Authorization", "Bearer $apiKey")
                     .build()
                 chain.proceed(newRequest)
             })
-            .addInterceptor(logger)
-            .readTimeout(40, TimeUnit.SECONDS)
+            .apply {
+                interceptors.forEach {
+                    addInterceptor(it)
+                }
+            }
+            .apply {
+                timeOut?.let {
+                    readTimeout(it)
+                }
+            }
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(this.baseUrl)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
@@ -72,8 +118,33 @@ class GptClient constructor(apiKey: String) {
         openAiService.retrieveModel(modelId)
     }
 
+    suspend fun createCompletions(init: CreateCompletionsRequest.Builder.() -> Unit) =
+        createCompletions(CreateCompletionsRequest.completionRequest(init))
+
     suspend fun createCompletions(request: CreateCompletionsRequest) = delegateResponseHandling {
+        request.stream = false
         openAiService.createCompletions(request)
+    }
+
+    suspend fun createStreamingCompletions(init: CreateCompletionsRequest.Builder.() -> Unit) =
+        createStreamingCompletions(CreateCompletionsRequest.completionRequest(init))
+
+    suspend fun createStreamingCompletions(request: CreateCompletionsRequest) = delegateResponseHandling {
+        request.stream = true
+        openAiService.createStreamingCompletions(request)
+    }.map {
+        callbackFlow<OpenAiCompletionsResponse> {
+            it.charStream().forEachLine {
+                val resultString = it.replace("data:", "").trim()
+                when {
+                    resultString == "[DONE]" -> channel.close()
+                    resultString.isNotEmpty() -> {
+                        trySend(gson.fromJson(resultString, OpenAiCompletionsResponse::class.java))
+                    }
+                }
+            }
+            awaitClose {  }
+        }.flowOn(Dispatchers.Default)
     }
 
     suspend fun createEdits(request: CreateEditRequest) = delegateResponseHandling {

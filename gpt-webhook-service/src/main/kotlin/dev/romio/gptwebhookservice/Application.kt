@@ -1,6 +1,6 @@
 package dev.romio.gptwebhookservice
 
-import dev.romio.gptengine.GptClient
+import dev.romio.gptengine.GptClient.Companion.gptClient
 import dev.romio.gptwebhookservice.config.ConfigImpl
 import dev.romio.gptwebhookservice.config.TgBotMode
 import dev.romio.gptwebhookservice.handler.ConversationHandler
@@ -13,13 +13,22 @@ import dev.romio.gptwebhookservice.storage.InMemoryStorage
 import io.ktor.server.application.Application
 import io.ktor.server.application.log
 import io.ktor.server.netty.EngineMain
+import okhttp3.logging.HttpLoggingInterceptor
+import java.time.Duration
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
     log.info("App Started, Creating configs and installing modules")
     val config = ConfigImpl(this)
-    val gptClient = GptClient(config.openAiKey)
+    val gptClient = gptClient {
+        apiKey = config.openAiKey
+        timeOut = Duration.ofSeconds(40)
+        addInterceptor {
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        }
+    }
     val storage = InMemoryStorage(config)
     val conversationHandler = ConversationHandler(config, gptClient, storage, log)
     val tgBot = createTelegramBot(config, conversationHandler, log, storage, gptClient)

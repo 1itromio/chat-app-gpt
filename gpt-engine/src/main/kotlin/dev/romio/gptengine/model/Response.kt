@@ -77,7 +77,7 @@ data class OpenAiCompletionsResponse(
     @SerializedName("object")
     val objectType: String,
     @SerializedName("usage")
-    val usage: Usage
+    val usage: Usage?
 )
 
 data class OpenAiEditResponse(
